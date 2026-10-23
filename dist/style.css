@@ -1,5 +1,5 @@
 /* Scratchboard: flat black ground, bone-white ink scratched into it, dried blood for live values.
-   No gradients or glows; #worn roughens ink edges and breaks them up like a worn print. */
+   No gradients, glows or SVG filters; the worn, broken ink is painted once by engraving.js. */
 :root{
  color-scheme:dark;
  --bg:#090807;--plate:#0d0c0b;--ink:#060505;
@@ -10,9 +10,14 @@
 }
 *{box-sizing:border-box}
 html,body{height:100%}
+/* Phones: no double-tap zoom, no font boosting, and no selection or callouts while playing. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation}
+.app{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.app input,.app select,footer details p,.voice-dialog input{-webkit-user-select:text;user-select:text}
+img{-webkit-user-drag:none}
 body{margin:0;background:var(--bg);color:var(--bone);font:500 14px/1.5 var(--label);letter-spacing:.03em}
 a{color:var(--bone);text-decoration-color:var(--blood-hi)}
-button,select{font:600 13px/1 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--bone);background:var(--ink);border:2px solid var(--bone-dim);border-radius:0;padding:9px 14px;cursor:pointer;filter:url(#rough)}
+button,select{font:600 13px/1 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--bone);background:var(--ink);border:2px solid var(--bone-dim);border-radius:0;padding:9px 14px;cursor:pointer}
 button:hover,select:hover{border-color:var(--bone);color:#fff}
 button:disabled{opacity:.5;cursor:wait}
 :focus-visible{outline:2px dashed var(--blood-hi);outline-offset:3px}
@@ -26,7 +31,7 @@ kbd{font:600 12px var(--label);border:1px solid var(--bone-faint);border-radius:
 .bar{inset:20px 28px auto;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
 .bar>*{pointer-events:auto}
 .brand-block{display:flex;flex-direction:column;gap:8px}
-.brand{font:400 42px/.9 var(--display);letter-spacing:.06em;color:var(--bone);text-decoration:none;filter:url(#rough)}
+.brand{font:400 42px/.9 var(--display);letter-spacing:.06em;color:var(--bone);text-decoration:none}
 .brand span{color:var(--blood-hi)}
 .status{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone-dim);max-width:260px}
 .status span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -34,7 +39,7 @@ kbd{font:600 12px var(--label);border:1px solid var(--bone-faint);border-radius:
 .status i.on{background:var(--blood-hi);border-color:var(--blood-hi)}
 .patch{display:flex;gap:8px}
 .power-bar{right:28px;bottom:24px;display:flex;gap:8px;align-items:center}
-.scope-mode{display:flex;filter:url(#rough)}
+.scope-mode{display:flex}
 .scope-mode button{filter:none;padding:9px 11px;margin-left:-2px;color:var(--bone-dim)}
 .scope-mode button:first-child{margin-left:0}
 .scope-mode button[aria-pressed="true"]{color:var(--ink);background:var(--bone);border-color:var(--bone)}
@@ -57,17 +62,13 @@ footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
 /* Grime: blotchy stains and fine grit worked into the plate, beneath the engraving and controls.
    Pre-rendered (grime.webp), so no browser has to regenerate noise on every repaint. */
 .disc::before{content:'';position:absolute;inset:9%;border-radius:50%;pointer-events:none;background:url(grime.webp) center/100% 100%}
-/* Not promoted to its own layer: Chrome would then re-run the filter while compositing every frame. */
-.plate{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;filter:url(#worn)}
-.plate .sun{stroke:var(--bone);stroke-width:.08;stroke-linecap:round}
-.plate .rim{fill:none;stroke:var(--bone-dim);stroke-width:.2}
-.plate .pad-edge{fill:none;stroke:var(--bone);stroke-width:.22;stroke-linejoin:round}
+.plate,.engraving{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .group-title{font-family:var(--display);font-weight:400;font-size:1.75px;letter-spacing:.14px;fill:var(--bone)}
 /* The engraved ouroboros: its inner edge lands on the plate rim at 40.1%, so the image spans 102.4% of the disc. */
-.serpent{position:absolute;left:-1.2%;top:-1.2%;width:102.4%;height:102.4%;max-width:none;max-height:none;z-index:4;pointer-events:none;user-select:none}
+.serpent{position:absolute;left:-1.2%;top:-1.2%;width:102.4%;height:102.4%;max-width:none;max-height:none;z-index:4;pointer-events:none;-webkit-user-select:none;user-select:none}
 
 /* Rays: a strip anchored at its inner end and rotated outward. */
-.ray{position:absolute;z-index:3;width:var(--len);height:2.8cqw;transform-origin:0 0;transform:rotate(var(--rot)) translateY(-50%);user-select:none}
+.ray{position:absolute;z-index:3;width:var(--len);height:2.8cqw;transform-origin:0 0;transform:rotate(var(--rot)) translateY(-50%);-webkit-user-select:none;user-select:none}
 .ray-label{position:absolute;left:.5cqw;bottom:calc(50% + 1cqw);display:flex;gap:.5cqw;align-items:baseline;font:600 1.3cqw/1 var(--label);letter-spacing:.08em;text-transform:uppercase;color:var(--bone-dim);white-space:nowrap;pointer-events:none;color:var(--bone);text-shadow:0 0 .2cqw var(--ink),0 0 .2cqw var(--ink),0 0 .45cqw var(--ink),0 0 .8cqw var(--ink)}
 .ray-label label{cursor:inherit}
 .flip .ray-label{transform:rotate(180deg)}
@@ -90,7 +91,7 @@ footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
 .fine:hover{color:var(--blood-hi);border-color:var(--bone)}
 
 .toggle label{position:absolute;inset:0;cursor:pointer}
-.toggle input{appearance:none;position:absolute;left:1.8cqw;top:50%;margin:-.95cqw 0 0 -.95cqw;width:1.9cqw;height:1.9cqw;border-radius:50%;cursor:pointer;border:.2cqw solid var(--bone-dim);background:var(--ink);filter:url(#worn)}
+.toggle input{appearance:none;position:absolute;left:1.8cqw;top:50%;margin:-.95cqw 0 0 -.95cqw;width:1.9cqw;height:1.9cqw;border-radius:50%;cursor:pointer;border:.2cqw solid var(--bone-dim);background:var(--ink)}
 .toggle input:checked{border-color:var(--bone);background:radial-gradient(circle,var(--blood-hi) 0 52%,var(--ink) 54%)}
 .toggle .ray-label{left:.9cqw}
 .toggle.solo input{left:1.3cqw}
@@ -104,7 +105,7 @@ footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
 .scope{position:absolute;left:36.2%;top:36.2%;width:27.6%;height:27.6%;border-radius:50%;overflow:hidden;z-index:2;box-shadow:0 0 0 .3cqw var(--ink),0 0 0 .5cqw var(--bone-dim)}
 #scope{display:block;width:100%;height:100%;will-change:transform}
 #pads{position:absolute;inset:0;z-index:2;pointer-events:none}
-.pad{position:absolute;inset:0;margin:0;padding:0;border:0;border-radius:0;pointer-events:auto;cursor:pointer;touch-action:none;user-select:none;-webkit-tap-highlight-color:transparent;
+.pad{position:absolute;inset:0;margin:0;padding:0;border:0;border-radius:0;pointer-events:auto;cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;
  background:transparent}
 .pad:hover{background:#e9e3d614}
 .pad:focus-visible{outline:0}

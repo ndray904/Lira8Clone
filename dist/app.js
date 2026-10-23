@@ -3,6 +3,7 @@ import {createCircularScope} from './circular-scope.js';
 import {createSphereScope} from './sphere-scope.js';
 import {polar} from './ring-geometry.js';
 import {R,LAYOUT,padAngle,padClip,place,buildPlate} from './disc.js';
+import {paintEngraving} from './engraving.js';
 const $=s=>document.querySelector(s);
 const schema=await fetch('controls.json').then(r=>r.json());
 const state=Object.fromEntries(schema.map(c=>[c.name,c.value]));
@@ -11,7 +12,10 @@ let context,node,gain,analyser,ready=false,starting=false;
 const prints=[];
 const send=createControlSender((name,value)=>node?.port.postMessage({type:'float',receiver:'8008-s-'+name,value}));
 function set(name,value,defer=false){state[name]=value;const w=widgets.get(name);if(w){w.input.value=value;if(w.input.type==='checkbox')w.input.checked=!!value;w.update?.();}if(ready)send(name,value,defer);}
-const disc=$('#disc');disc.prepend(buildPlate());
+const disc=$('#disc'),engraving=document.createElement('canvas');engraving.className='engraving';engraving.setAttribute('aria-hidden','true');disc.prepend(engraving,buildPlate());
+// The engraving is repainted only when the disc changes size.
+let engravedAt=0;const engrave=()=>{const w=engraving.clientWidth;if(w&&Math.abs(w-engravedAt)>4&&paintEngraving(engraving))engravedAt=w;};
+engrave();if(typeof ResizeObserver==='function'){let timer;new ResizeObserver(()=>{clearTimeout(timer);timer=setTimeout(engrave,120);}).observe(disc);}
 const unit=v=>Math.max(0,Math.min(1,v));
 // Each control is a strip rotated onto its ray and anchored at its inner end; children lay out along it.
 function ray(r0,len,angle,flip,cls){const el=document.createElement('div');el.className='ray '+cls+(flip?' flip':'');place(el,r0,angle,angle);el.style.setProperty('--len',len+'cqw');disc.append(el);return el;}

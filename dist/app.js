@@ -51,6 +51,15 @@ for(let v=1;v<=8;v++){const a=padAngle(v),pair=Math.floor((v-1)/2)*2+1;
  fine.onclick=()=>{fineVoice=v;voiceDialog.querySelector('h2').textContent='Voice '+v;voiceDialog.querySelector('.voice-context').textContent=`Pair ${pair} + ${pair+1} · Group ${v<=4?'A':'B'} · Key ${v}`;voiceDialog.querySelector('input').value=state['tune-'+v];voiceDialog.showModal();};
  const pad=document.createElement('button');pad.id='pad-'+v;pad.className='pad';pad.style.clipPath=padClip(v);pad.setAttribute('aria-label','Play voice '+v);pad.setAttribute('aria-pressed','false');const num=document.createElement('span');num.className='pad-number';num.textContent=v;const [x,y]=polar((R.padIn+R.padOut)/2,a);num.style.left=x+'%';num.style.top=y+'%';const ray=LAYOUT.rays.find(r=>r.voice===v);num.style.setProperty('--rot',(ray.flip?a+180:a)+'deg');pad.append(num);$('#pads').append(pad);
  pad.onpointerdown=e=>{if(!ready){$('#status').textContent='Start audio to play';return;}e.preventDefault();pad.setPointerCapture(e.pointerId);touch(v,$('#latch').checked?!active.has(v):true);};pad.onpointerup=()=>{if(!$('#latch').checked)touch(v,false);};pad.onpointercancel=()=>touch(v,false);pad.onlostpointercapture=()=>{if(!$('#latch').checked)touch(v,false);};pad.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&!e.repeat){e.preventDefault();e.stopPropagation();touch(v,$('#latch').checked?!active.has(v):true);}};pad.onkeyup=e=>{if(e.key==='Enter'||e.key===' '){e.stopPropagation();if(!$('#latch').checked)touch(v,false);}};}
+// Fingers on pads and sliders play the instrument: keep them from panning, pinching or zooming the page.
+// While any note sounds, a stray finger elsewhere on the disc is held still too (switches still take
+// taps). Safari honours
+// touch-action only partly, so its touch and gesture events are cancelled directly.
+const playing=e=>{const t=e.target;return !!t.closest?.('.pad,.slider')||active.size>0&&!t.closest?.('button,input,label,select');};
+for(const type of ['touchstart','touchmove'])disc.addEventListener(type,e=>{if(playing(e))e.preventDefault();},{passive:false});
+document.addEventListener('gesturestart',e=>{if(e.target.closest?.('#disc'))e.preventDefault();},{passive:false});
+// Browsers make no click from a second finger, so switches tapped while a note is held act on lift-off.
+disc.addEventListener('pointerup',e=>{if(e.pointerType!=='touch'||e.isPrimary)return;const sw=e.target.closest?.('.toggle,.selector');sw?.querySelector('input[type=checkbox],.pill')?.click();});
 // Phones scroll the full-size disc sideways; start centred on the pads.
 const wrap=$('.disc-wrap');wrap.scrollLeft=(wrap.scrollWidth-wrap.clientWidth)/2;
 function status(text,on=false){$('#status').textContent=text;$('#lamp').classList.toggle('on',on);$('#power').classList.toggle('on',on);}

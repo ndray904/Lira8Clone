@@ -2,7 +2,7 @@
 
 ## Layout
 
-Every control lives on one circular plate ringed by an ouroboros, in an etched-bone style: bone engraving on charcoal, ember red for live values.
+Every control lives on one circular plate ringed by an ouroboros, in a flat scratchboard style: bone-white ink scratched into black, smoky grime worked into the plate, dried-blood red for live values, New Rocker and Grenze type. An SVG filter (`#worn` in `index.html`) roughens and breaks up the ink; text uses a gentler `#rough`. Each slider's knob is a sigil (`dist/slider-knob.png`) barely wider than its slot.
 
 - **Centre**: the live circular scope, ringed by eight touch pads; each pad sits directly under its voice's Tune slider.
 - **Sliders** radiate outward like rays (`dist/disc.js` lays them out clockwise from a single list, so nothing is hand-placed). Voices 1–4 fill the right side and 5–8 the left: per pair, Tune, Mod, Sharp, Tune, with the pair's FM Source switch and Fast LED in the inner band beneath Mod and Sharp, and each group's Pitch and Hold between the pairs. Delay Mod, Delay and Output run across the top; Hyper LFO and the Voice Network switches sit at the bottom. Tune sliders are longer, in proportion to the old tune knobs. Group names are engraved round the rim, and labels on the left and bottom turn so they read upright.

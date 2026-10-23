@@ -1,21 +1,22 @@
-/* Etched bone: a charcoal plate engraved in bone white, with ember for live values. */
+/* Scratchboard: flat black ground, bone-white ink scratched into it, dried blood for live values.
+   No gradients or glows; #worn roughens ink edges and breaks them up like a worn print. */
 :root{
  color-scheme:dark;
- --bg:#0c0b0a;--plate:#161412;--plate-deep:#0d0c0b;--groove:#050404;
- --bone:#ece4d4;--bone-dim:#b0a593;--bone-faint:#7d7466;--etch:#d6cab4;
- --ember:#e8402c;--ember-hot:#ff9c8a;--ember-glow:#e8402c66;
- --display:'Cormorant SC',Georgia,serif;--label:'Barlow Condensed','Arial Narrow',sans-serif;
+ --bg:#090807;--plate:#0d0c0b;--ink:#060505;
+ --bone:#e9e3d6;--bone-dim:#ada495;--bone-faint:#7a7266;
+ --blood:#9c150d;--blood-hi:#e0392b;
+ --display:'New Rocker','Grenze Gotisch',Georgia,serif;--label:'Grenze','Georgia',serif;
  --d:clamp(600px,min(100vh - 24px,100vw - 32px),1200px);
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,#1a171455,transparent 70%),var(--bg);color:var(--bone);font:500 13px/1.5 var(--label);letter-spacing:.04em}
-a{color:var(--ember-hot)}
-button,select{font:600 12px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:var(--bone);background:#141210;border:1px solid #4a4439;border-radius:4px;padding:10px 14px;cursor:pointer}
-button:hover,select:hover{border-color:var(--bone-faint)}
+body{margin:0;background:var(--bg);color:var(--bone);font:500 14px/1.5 var(--label);letter-spacing:.03em}
+a{color:var(--bone);text-decoration-color:var(--blood-hi)}
+button,select{font:600 13px/1 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--bone);background:var(--ink);border:2px solid var(--bone-dim);border-radius:0;padding:9px 14px;cursor:pointer;filter:url(#rough)}
+button:hover,select:hover{border-color:var(--bone);color:#fff}
 button:disabled{opacity:.5;cursor:wait}
-:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
-kbd{font:600 11px var(--label);border:1px solid #4a4439;border-bottom-width:2px;border-radius:3px;padding:0 5px;color:var(--bone)}
+:focus-visible{outline:2px dashed var(--blood-hi);outline-offset:3px}
+kbd{font:600 12px var(--label);border:1px solid var(--bone-faint);border-radius:0;padding:0 5px;color:var(--bone)}
 
 /* The disc fills the screen height; header, power controls and footer sit in the corners. */
 .app{position:relative;height:100%;min-height:624px;display:grid;place-items:center;overflow:hidden}
@@ -25,93 +26,95 @@ kbd{font:600 11px var(--label);border:1px solid #4a4439;border-bottom-width:2px;
 .bar{inset:20px 28px auto;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
 .bar>*{pointer-events:auto}
 .brand-block{display:flex;flex-direction:column;gap:8px}
-.brand{font:700 32px/1 var(--display);letter-spacing:.14em;color:var(--bone);text-decoration:none}
-.brand span{color:var(--ember)}
-.status{display:flex;align-items:center;gap:8px;font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim);max-width:260px}
+.brand{font:400 42px/.9 var(--display);letter-spacing:.06em;color:var(--bone);text-decoration:none;filter:url(#rough)}
+.brand span{color:var(--blood-hi)}
+.status{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone-dim);max-width:260px}
 .status span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.status i{flex:none;width:8px;height:8px;border-radius:50%;background:#3a332b}
-.status i.on{background:var(--ember);box-shadow:0 0 8px var(--ember)}
+.status i{flex:none;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--bone-faint)}
+.status i.on{background:var(--blood-hi);border-color:var(--blood-hi)}
 .patch{display:flex;gap:8px}
 .power-bar{right:28px;bottom:24px;display:flex;gap:8px;align-items:center}
-.latch{display:flex;align-items:center;gap:6px;padding:0 8px;font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-dim);cursor:pointer}
-.latch input{accent-color:var(--ember);margin:0}
-.power{color:#1a0705;background:var(--ember);border-color:var(--ember);box-shadow:0 0 16px var(--ember-glow)}
-.power:hover{filter:brightness(1.1)}
-.power.on{color:var(--ember-hot);background:#141210}
-footer{left:28px;bottom:24px;max-width:300px;display:flex;flex-direction:column;gap:6px;color:var(--bone-faint);font-size:12px}
+.latch{display:flex;align-items:center;gap:6px;padding:0 8px;font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim);cursor:pointer}
+.latch input{accent-color:var(--blood);margin:0}
+.power{color:var(--bone);background:var(--blood);border-color:var(--blood-hi)}
+.power:hover{background:#b81b10}
+.power.on{color:var(--blood-hi);background:var(--ink);border-color:var(--blood-hi)}
+footer{left:28px;bottom:24px;max-width:300px;display:flex;flex-direction:column;gap:6px;color:var(--bone-faint);font-size:13px}
 footer p{margin:0}
 footer summary{cursor:pointer;color:var(--bone-dim)}
-footer details[open]{background:#100e0cf2;border:1px solid #3a342b;border-radius:6px;padding:10px 12px;max-height:50vh;overflow:auto}
+footer details[open]{background:#090807f2;border:1.5px solid var(--bone-faint);border-radius:0;padding:10px 12px;max-height:50vh;overflow:auto}
 footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
 /* The input monitor (diagnostics) folds into the top of the footer corner. */
-.app>details{left:28px;bottom:96px;width:300px;margin:0!important;padding:8px 12px!important;border-color:#3a342b!important;color:var(--bone-faint)!important;background:#100e0ce6;max-height:40vh;overflow:auto}
+.app>details{left:28px;bottom:96px;width:300px;margin:0!important;padding:8px 12px!important;border-color:var(--bone-faint)!important;border-radius:0!important;color:var(--bone-faint)!important;background:#090807e6;max-height:40vh;overflow:auto}
 
 /* Disc */
 .disc{position:relative;width:var(--d);aspect-ratio:1;flex:none;border-radius:50%;container-type:inline-size;
- background:radial-gradient(circle closest-side,#1b1815 0,var(--plate) 55%,var(--plate-deep) 81%,#2a2520 81.1%,var(--plate-deep) 81.5%,transparent 82%)}
-.disc::after{content:'';position:absolute;inset:9%;border-radius:50%;pointer-events:none;opacity:.12;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.plate{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.plate .ray{stroke:var(--etch);stroke-opacity:.07;stroke-width:.07}
-.plate .rim{fill:none;stroke:var(--etch);stroke-opacity:.35;stroke-width:.12}
-.plate .groove{stroke:var(--groove);stroke-width:.6;stroke-linecap:round}
-.group-title{font-family:var(--display);font-weight:700;font-size:1.25px;letter-spacing:.34px;fill:var(--bone-dim)}
+ background:radial-gradient(circle closest-side,var(--plate) 81%,transparent 81.3%)}
+/* Grime: blotchy stains and fine grit worked into the plate, beneath the engraving and controls. */
+.disc::before{content:'';position:absolute;inset:9%;border-radius:50%;pointer-events:none;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.011 .018' numOctaves='4' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 .17 0 0 0 0 .155 0 0 0 0 .14 0 0 0 -2.6 1.3'/%3E%3C/filter%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .85 0 0 0 0 .8 0 0 0 0 .74 0 0 0 14 -9.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E") center/100% 100%}
+.plate{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;filter:url(#worn)}
+.plate .sun{stroke:var(--bone);stroke-width:.08;stroke-linecap:round}
+.plate .rim{fill:none;stroke:var(--bone-dim);stroke-width:.2}
+.plate .groove{stroke:var(--bone-faint);stroke-width:.16;stroke-linecap:round}
+.group-title{font-family:var(--display);font-weight:400;font-size:1.75px;letter-spacing:.14px;fill:var(--bone)}
 /* The engraved ouroboros: its inner edge lands on the plate rim at 40.1%, so the image spans 102.4% of the disc. */
-.serpent{position:absolute;left:-1.2%;top:-1.2%;width:102.4%;height:102.4%;z-index:4;pointer-events:none;user-select:none;filter:drop-shadow(0 .35cqw .7cqw #000)}
+.serpent{position:absolute;left:-1.2%;top:-1.2%;width:102.4%;height:102.4%;z-index:4;pointer-events:none;user-select:none}
 
 /* Rays: a strip anchored at its inner end and rotated outward. */
 .ray{position:absolute;z-index:3;width:var(--len);height:2.8cqw;transform-origin:0 0;transform:rotate(var(--rot)) translateY(-50%);user-select:none}
-.ray-label{position:absolute;left:.5cqw;bottom:calc(50% + 1.3cqw);display:flex;gap:.5cqw;align-items:baseline;font:600 1.18cqw/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:var(--bone-dim);white-space:nowrap;pointer-events:none}
+.ray-label{position:absolute;left:.5cqw;bottom:calc(50% + 1cqw);display:flex;gap:.5cqw;align-items:baseline;font:600 1.3cqw/1 var(--label);letter-spacing:.08em;text-transform:uppercase;color:var(--bone-dim);white-space:nowrap;pointer-events:none;filter:url(#rough)}
 .ray-label label{cursor:inherit}
 .flip .ray-label{transform:rotate(180deg)}
-.ray output{color:var(--ember-hot);font-weight:600}
+.ray output{color:var(--blood-hi);font-weight:700}
 
 .slider{cursor:pointer;touch-action:none}
-.slider .track{position:absolute;inset:50% 0 auto;height:.42cqw;margin-top:-.21cqw;border-radius:1cqw}
-.slider .fill{position:absolute;left:0;top:0;bottom:0;width:calc(var(--v) * 100%);border-radius:inherit;background:linear-gradient(90deg,#5a140b,var(--ember));box-shadow:0 0 .7cqw var(--ember-glow)}
-.slider .thumb{position:absolute;top:50%;left:calc(var(--v) * 100%);width:1.25cqw;height:2.5cqw;transform:translate(-50%,-50%);border-radius:.3cqw;
- background:linear-gradient(90deg,#8c826f,#f1e9da 45%,#c9bea9 55%,#6d6456);box-shadow:0 .15cqw .4cqw #000,inset 0 0 0 .08cqw #00000066}
-.slider .thumb::after{content:'';position:absolute;left:50%;top:15%;bottom:15%;width:.16cqw;margin-left:-.08cqw;background:#1a0705}
-.slider.long .thumb{width:1.45cqw;height:2.9cqw}
+/* The slot is a scratched line; the value is a flat smear of blood up to the sigil. */
+.slider .track{position:absolute;inset:50% 0 auto;height:.55cqw;margin-top:-.275cqw}
+.slider .fill{position:absolute;left:0;top:0;bottom:0;width:calc(var(--v) * 100%);background:var(--blood);filter:url(#worn)}
+.slider .thumb{position:absolute;top:50%;left:calc(var(--v) * 100%);width:1.95cqw;height:1.5cqw;transform:translate(-50%,-50%);background:url(slider-knob.png) center/contain no-repeat;
+ filter:drop-shadow(0 0 .12cqw var(--ink)) drop-shadow(0 0 .12cqw var(--ink))}
+.slider.long .thumb{width:2.25cqw;height:1.73cqw}
 .slider input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;pointer-events:none}
-.slider:has(input:focus-visible) .thumb{outline:.2cqw solid var(--ember);outline-offset:.2cqw}
+.slider:has(input:focus-visible) .thumb{outline:.18cqw dashed var(--blood-hi);outline-offset:.15cqw}
 .slider .ray-label{left:auto;right:.4cqw}
 .slider .ray-label output,.selector .ray-label output{display:none}
 .slider:hover .ray-label output,.slider.dragging .ray-label output,.slider:focus-within .ray-label output,.selector:hover .ray-label output,.selector:focus-within .ray-label output{display:inline}
-.slider.dragging .thumb{filter:brightness(1.15)}
-.fine{pointer-events:auto;padding:.15cqw .5cqw;border-radius:99px;font:600 1cqw/1.2 var(--label);letter-spacing:.06em;color:var(--bone);background:#0b0a09;border:1px solid #4a4439}
-.fine:hover{color:var(--ember-hot);border-color:var(--bone-faint)}
+.slider.dragging .thumb{filter:drop-shadow(0 0 .12cqw var(--blood-hi)) drop-shadow(0 0 .12cqw var(--blood-hi))}
+.fine{pointer-events:auto;padding:.1cqw .45cqw;font:700 1.15cqw/1.2 var(--label);letter-spacing:.04em;color:var(--bone);background:var(--ink);border:.12cqw solid var(--bone-faint)}
+.fine:hover{color:var(--blood-hi);border-color:var(--bone)}
 
 .toggle label{position:absolute;inset:0;cursor:pointer}
-.toggle input{appearance:none;position:absolute;left:1.8cqw;top:50%;margin:-1.05cqw 0 0 -1.05cqw;width:2.1cqw;height:2.1cqw;border-radius:50%;cursor:pointer;border:.12cqw solid #5a5244;background:radial-gradient(circle at 40% 35%,#4a1510,#160504 70%);box-shadow:0 .15cqw .3cqw #000}
-.toggle input:checked{border-color:var(--ember-hot);background:radial-gradient(circle at 40% 35%,#ffe0d8,var(--ember) 45%,#6a0b04);box-shadow:0 0 1.2cqw var(--ember-glow),0 0 .5cqw var(--ember)}
+.toggle input{appearance:none;position:absolute;left:1.8cqw;top:50%;margin:-.95cqw 0 0 -.95cqw;width:1.9cqw;height:1.9cqw;border-radius:50%;cursor:pointer;border:.2cqw solid var(--bone-dim);background:var(--ink);filter:url(#worn)}
+.toggle input:checked{border-color:var(--bone);background:radial-gradient(circle,var(--blood-hi) 0 52%,var(--ink) 54%)}
 .toggle .ray-label{left:.9cqw}
 .toggle.solo input{left:1.3cqw}
 .toggle.solo .ray-label{left:3cqw;bottom:auto;top:50%;margin-top:-.56cqw}
 
-.selector .pill{position:absolute;inset:50% 0 auto;height:1.5cqw;margin-top:-.75cqw;padding:0;border-radius:1cqw;border:.1cqw solid #5a5244;background:linear-gradient(#070605,#1a1714)}
-.selector .pill::after{content:'';position:absolute;top:50%;left:calc(.75cqw + (100% - 1.5cqw) * var(--switch-index) / var(--switch-stops));width:1.1cqw;height:1.1cqw;margin:-.55cqw 0 0 -.55cqw;border-radius:50%;background:radial-gradient(circle at 40% 35%,#f1e9da,#a99c86 60%,#5d5446);box-shadow:0 .1cqw .25cqw #000;transition:left .12s}
+.selector .pill{position:absolute;inset:50% 0 auto;height:1.5cqw;margin-top:-.75cqw;padding:0;border-radius:1cqw;border:.18cqw solid var(--bone-dim);background:var(--ink)}
+.selector .pill::after{content:'';position:absolute;top:50%;left:calc(.75cqw + (100% - 1.5cqw) * var(--switch-index) / var(--switch-stops));width:.95cqw;height:.95cqw;margin:-.475cqw 0 0 -.475cqw;border-radius:50%;background:var(--bone);transition:left .12s}
 .selector .ray-label{bottom:calc(50% + .9cqw)}
 
 /* Scope and pads */
-.scope{position:absolute;left:36.2%;top:36.2%;width:27.6%;height:27.6%;border-radius:50%;overflow:hidden;z-index:2;box-shadow:0 0 0 .35cqw #050404,0 0 0 .5cqw #3a342b,inset 0 0 3cqw #000}
+.scope{position:absolute;left:36.2%;top:36.2%;width:27.6%;height:27.6%;border-radius:50%;overflow:hidden;z-index:2;box-shadow:0 0 0 .3cqw var(--ink),0 0 0 .5cqw var(--bone-dim)}
 #scope{display:block;width:100%;height:100%}
 #pads{position:absolute;inset:0;z-index:2;pointer-events:none}
 .pad{position:absolute;inset:0;margin:0;padding:0;border:0;border-radius:0;pointer-events:auto;cursor:pointer;touch-action:none;user-select:none;-webkit-tap-highlight-color:transparent;
- background:radial-gradient(circle closest-side,transparent 29.2%,#050404 29.3%,#6d6456 29.6%,#221e1a 30.2%,#1a1714 39.5%,#6d6456 41%,#050404 41.2%,transparent 41.3%);transition:filter .08s}
-.pad:hover{filter:brightness(1.4)}
-.pad:focus-visible{outline:0;filter:brightness(1.7)}
-.pad.active{filter:none;background:radial-gradient(circle closest-side,transparent 29.2%,#ffd2c2 29.4%,var(--ember) 30.5%,#8a1e0e 36%,#3a0a04 40.4%,#ff8a6a 41.1%,transparent 41.3%)}
-.pad-number{position:absolute;transform:translate(-50%,-50%);font:700 2.2cqw/1 var(--display);color:var(--bone-dim);pointer-events:none}
+ background:radial-gradient(circle closest-side,transparent 29.2%,var(--bone) 29.3% 29.9%,var(--ink) 30% 40.5%,var(--bone) 40.6% 41.2%,transparent 41.3%)}
+.pad:hover{background:radial-gradient(circle closest-side,transparent 29.2%,var(--bone) 29.3% 29.8%,#1a1714 29.9% 40.6%,var(--bone) 40.7% 41.2%,transparent 41.3%)}
+.pad:focus-visible{outline:0}
+.pad:focus-visible .pad-number{text-decoration:underline}
+.pad.active{background:radial-gradient(circle closest-side,transparent 29.2%,var(--bone) 29.3% 41.2%,transparent 41.3%)}
+.pad-number{position:absolute;transform:translate(-50%,-50%);font:400 2.9cqw/1 var(--display);color:var(--bone);pointer-events:none;filter:url(#rough)}
 .pad:hover .pad-number{color:var(--bone)}
-.pad.active .pad-number{color:#fff3e6;text-shadow:0 0 1.2cqw #ff3d0a}
+.pad.active .pad-number{color:var(--ink)}
 
 /* Fine-tune dialog */
-.voice-dialog{width:min(92vw,320px);padding:22px 24px 24px;background:linear-gradient(160deg,#1d1a16,#0f0d0b);color:var(--bone);border:1px solid #5a5244;border-radius:10px;box-shadow:0 30px 80px #000c}
+.voice-dialog{width:min(92vw,320px);padding:22px 24px 24px;background:var(--plate);color:var(--bone);border:2px solid var(--bone-dim);border-radius:0}
 .voice-dialog::backdrop{background:#050302bb;backdrop-filter:blur(3px)}
-.voice-dialog h2{margin:0 0 4px;font:700 20px var(--display);letter-spacing:.16em;text-transform:uppercase}
+.voice-dialog h2{margin:0 0 4px;font:400 28px var(--display);letter-spacing:.04em}
 .voice-context{margin:0 0 18px;color:var(--bone-faint);font-size:12px}
 .voice-dialog label{display:block;margin-bottom:6px;color:var(--bone-dim);font-size:12px}
-.voice-dialog input{width:100%;padding:9px 10px;font:600 16px var(--label);color:var(--bone);background:#0b0a09;border:1px solid #4a4439;border-radius:6px}
+.voice-dialog input{width:100%;padding:9px 10px;font:600 16px var(--label);color:var(--bone);background:var(--ink);border:1.5px solid var(--bone-faint);border-radius:0}
 .close-menu{float:right;margin:-8px -10px 0 0;padding:2px 8px;font-size:20px;border:0;background:none;color:var(--bone-dim)}
 
 /* Without room for the corners, stack header, disc and controls; phones scroll the disc sideways. */
@@ -127,4 +130,4 @@ footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
  footer{max-width:none;padding:0 16px}
  .app>details{width:auto;margin:0 16px!important}
 }
-@media (prefers-reduced-motion:reduce){.selector .pill::after,.pad{transition:none}}
+@media (prefers-reduced-motion:reduce){.selector .pill::after{transition:none}}

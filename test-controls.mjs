@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {createControlSender} from './dist/control-sender.js';
+const events=[],scheduled=[];
+const send=createControlSender((...v)=>events.push(v),cb=>scheduled.push(cb));
+for(let i=0;i<1000;i++)send('feedback',i/10,true);
+send('mod-1',80,true);
+assert.equal(events.length,0);assert.equal(scheduled.length,1);
+send('sensor-1',1);send('sensor-1',0);
+assert.deepEqual(events,[['sensor-1',1],['sensor-1',0]]);
+scheduled.shift()();
+assert.deepEqual(events.slice(2),[['feedback',99.9],['mod-1',80]]);
+send('feedback',120,true);send('feedback',30);scheduled.shift()();
+assert.deepEqual(events.at(-1),['feedback',30]);
+assert.equal(events.filter(e=>e[1]===120).length,0);
+console.log('PASS: 1000 events coalesced, final values preserved, notes immediate, preset resets cancel stale updates.');

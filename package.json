@@ -1,0 +1,7 @@
+{
+  "name": "lira-eight",
+  "private": true,
+  "type": "module",
+  "scripts": {"test:layout": "node test-layout.mjs"},
+  "devDependencies": {"linkedom": "0.18.12"}
+}

@@ -36,3 +36,16 @@ const canvas3={clientWidth:300,width:0,height:0,getContext:()=>new Proxy({},{get
 const draw3=createSphereScope(canvas3);let reads3=0;const analyser3={getFloatTimeDomainData:d=>{reads3++;d.set(tone);}};
 draw3(analyser3,true,100,'sphere');draw3(analyser3,true,110,'radiate');draw3(analyser3,true,200,'radiate');assert.equal(reads3,2,'3D views share the 30 FPS cap and read live samples');
 console.log('PASS: 3D views use real samples; silence is a true sphere; radiated wave arrives at its delay and falls as 1/r.');
+// Pitch-fitted window: the period of known tones is found within 1%, and the window spans three whole cycles.
+const {findPeriod,createPitchWindow,CYCLES,FALLBACK}=await import('./dist/pitch-window.js');
+const rate=48000,tones=[31,55,110,220,440,1000];
+for(const hz of tones){const s=new Float32Array(8192);for(let i=0;i<s.length;i++)s[i]=.3*Math.sin(i*2*Math.PI*hz/rate)+.12*Math.sin(i*2*Math.PI*hz*2/rate+.4);
+ const found=findPeriod(s,rate);assert(Math.abs(found/(rate/hz)-1)<.01,`${hz} Hz period found: ${found} vs ${rate/hz}`);
+ const fit=createPitchWindow();let w;for(let k=0;k<3;k++)w=fit(s,rate);
+ assert(Math.abs(w.length/(CYCLES*rate/hz)-1)<.02,`${hz} Hz window spans ${CYCLES} cycles`);
+ assert(s[w.start-1]<=0&&s[w.start]>0,`${hz} Hz window starts on a rising zero crossing`);
+ assert(w.start+w.length<=s.length,'Window fits the buffer');}
+const noise=new Float32Array(8192);let seed=1;for(let i=0;i<noise.length;i++){seed=(seed*16807)%2147483647;noise[i]=seed/2147483647-.5;}
+assert.equal(findPeriod(noise,rate),0,'Noise has no pitch');assert.equal(createPitchWindow()(noise,rate).length,FALLBACK,'No pitch falls back to the fixed window');
+assert.equal(findPeriod(new Float32Array(8192),rate),0,'Silence has no pitch');
+console.log('PASS: pitch found within 1% from 31 Hz to 1 kHz; window spans three cycles from a rising zero crossing; noise and silence fall back.');

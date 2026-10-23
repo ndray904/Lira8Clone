@@ -18,7 +18,9 @@ function wrap(file,src){
  const body=src.replace(/^import \{([^}]+)\} from '\.\/([\w-]+\.js)';$/gm,(_,ids,dep)=>`const {${ids}}=__mods['${dep}'];`).replace(/^export /gm,'');
  return `__mods['${file}']=(()=>{\n${body}\nreturn {${names.join(',')}};\n})();`;
 }
-const order=['ring-geometry.js','disc.js','control-sender.js','circular-scope.js','sphere-scope.js'];
+// Follow imports from app.js so every module lands after the ones it depends on.
+const deps=src=>[...src.matchAll(/^import \{[^}]+\} from '\.\/([\w-]+\.js)';$/gm)].map(m=>m[1]);
+const order=[];(function visit(file){for(const dep of deps(read(file)))if(!order.includes(dep)){visit(dep);order.push(dep);}})('app.js');
 let app=read('app.js').replace(/^import \{([^}]+)\} from '\.\/([\w-]+\.js)';$/gm,(_,ids,dep)=>`const {${ids}}=__mods['${dep}'];`);
 const swaps=[
  ["fetch('controls.json').then(r=>r.json())","JSON.parse(document.getElementById('lira-controls').textContent)"],
@@ -30,6 +32,8 @@ assert(!/^import /m.test(app),'Unresolved import in app.js');
 
 let css=read('style.css');assert(css.includes('url(slider-knob.png)'),'Knob image reference moved');
 css=css.replace('url(slider-knob.png)',`url(${dataUri('slider-knob.png','image/png')})`);
+assert(css.includes('url(grime.webp)'),'Grime texture reference moved');
+css=css.replace('url(grime.webp)',`url(${dataUri('grime.webp','image/webp')})`);
 let html=read('index.html');
 const swapsHtml=[
  ['<link rel="stylesheet" href="style.css">',`<style>\n${css}\n</style>`],

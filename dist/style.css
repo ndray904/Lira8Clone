@@ -51,26 +51,26 @@ footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
 .disc{position:relative;width:var(--d);aspect-ratio:1;flex:none;border-radius:50%;container-type:inline-size;
  background:radial-gradient(circle closest-side,var(--plate) 81%,transparent 81.3%)}
 /* Grime: blotchy stains and fine grit worked into the plate, beneath the engraving and controls. */
-.disc::before{content:'';position:absolute;inset:9%;border-radius:50%;pointer-events:none;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.011 .018' numOctaves='4' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 .17 0 0 0 0 .155 0 0 0 0 .14 0 0 0 -2.6 1.3'/%3E%3C/filter%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .85 0 0 0 0 .8 0 0 0 0 .74 0 0 0 14 -9.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E") center/100% 100%}
+.disc::before{content:'';position:absolute;inset:9%;border-radius:50%;pointer-events:none;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.011 .018' numOctaves='4' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 .17 0 0 0 0 .155 0 0 0 0 .14 0 0 0 -2.6 1.3'/%3E%3C/filter%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .62 0 0 0 0 .58 0 0 0 0 .54 0 0 0 14 -10.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E") center/100% 100%}
 .plate{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;filter:url(#worn)}
 .plate .sun{stroke:var(--bone);stroke-width:.08;stroke-linecap:round}
 .plate .rim{fill:none;stroke:var(--bone-dim);stroke-width:.2}
-.plate .groove{stroke:var(--bone-faint);stroke-width:.16;stroke-linecap:round}
+.plate .pad-edge{fill:none;stroke:var(--bone);stroke-width:.22;stroke-linejoin:round}
 .group-title{font-family:var(--display);font-weight:400;font-size:1.75px;letter-spacing:.14px;fill:var(--bone)}
 /* The engraved ouroboros: its inner edge lands on the plate rim at 40.1%, so the image spans 102.4% of the disc. */
 .serpent{position:absolute;left:-1.2%;top:-1.2%;width:102.4%;height:102.4%;z-index:4;pointer-events:none;user-select:none}
 
 /* Rays: a strip anchored at its inner end and rotated outward. */
 .ray{position:absolute;z-index:3;width:var(--len);height:2.8cqw;transform-origin:0 0;transform:rotate(var(--rot)) translateY(-50%);user-select:none}
-.ray-label{position:absolute;left:.5cqw;bottom:calc(50% + 1cqw);display:flex;gap:.5cqw;align-items:baseline;font:600 1.3cqw/1 var(--label);letter-spacing:.08em;text-transform:uppercase;color:var(--bone-dim);white-space:nowrap;pointer-events:none;filter:url(#rough)}
+.ray-label{position:absolute;left:.5cqw;bottom:calc(50% + 1cqw);display:flex;gap:.5cqw;align-items:baseline;font:600 1.3cqw/1 var(--label);letter-spacing:.08em;text-transform:uppercase;color:var(--bone-dim);white-space:nowrap;pointer-events:none;filter:url(#rough);color:var(--bone);text-shadow:0 0 .2cqw var(--ink),0 0 .2cqw var(--ink),0 0 .45cqw var(--ink),0 0 .8cqw var(--ink)}
 .ray-label label{cursor:inherit}
 .flip .ray-label{transform:rotate(180deg)}
 .ray output{color:var(--blood-hi);font-weight:700}
 
 .slider{cursor:pointer;touch-action:none}
-/* The slot is a scratched line; the value is a flat smear of blood up to the sigil. */
-.slider .track{position:absolute;inset:50% 0 auto;height:.55cqw;margin-top:-.275cqw}
-.slider .fill{position:absolute;left:0;top:0;bottom:0;width:calc(var(--v) * 100%);background:var(--blood);filter:url(#worn)}
+/* The slot is a scratched line cut clean through the grime; the value is a flat smear of blood up to the sigil. */
+.slider .track{position:absolute;inset:50% 0 auto;height:.55cqw;margin-top:-.275cqw;background:linear-gradient(transparent 38%,var(--bone-faint) 38% 62%,transparent 62%) var(--ink);box-shadow:0 0 0 .25cqw var(--ink);filter:url(#rough)}
+.slider .fill{position:absolute;left:0;top:0;bottom:0;width:calc(var(--v) * 100%);background:var(--blood)}
 .slider .thumb{position:absolute;top:50%;left:calc(var(--v) * 100%);width:1.95cqw;height:1.5cqw;transform:translate(-50%,-50%);background:url(slider-knob.png) center/contain no-repeat;
  filter:drop-shadow(0 0 .12cqw var(--ink)) drop-shadow(0 0 .12cqw var(--ink))}
 .slider.long .thumb{width:2.25cqw;height:1.73cqw}
@@ -99,14 +99,14 @@ footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
 #scope{display:block;width:100%;height:100%}
 #pads{position:absolute;inset:0;z-index:2;pointer-events:none}
 .pad{position:absolute;inset:0;margin:0;padding:0;border:0;border-radius:0;pointer-events:auto;cursor:pointer;touch-action:none;user-select:none;-webkit-tap-highlight-color:transparent;
- background:radial-gradient(circle closest-side,transparent 29.2%,var(--bone) 29.3% 29.9%,var(--ink) 30% 40.5%,var(--bone) 40.6% 41.2%,transparent 41.3%)}
-.pad:hover{background:radial-gradient(circle closest-side,transparent 29.2%,var(--bone) 29.3% 29.8%,#1a1714 29.9% 40.6%,var(--bone) 40.7% 41.2%,transparent 41.3%)}
+ background:transparent}
+.pad:hover{background:#e9e3d614}
 .pad:focus-visible{outline:0}
 .pad:focus-visible .pad-number{text-decoration:underline}
-.pad.active{background:radial-gradient(circle closest-side,transparent 29.2%,var(--bone) 29.3% 41.2%,transparent 41.3%)}
-.pad-number{position:absolute;transform:translate(-50%,-50%);font:400 2.9cqw/1 var(--display);color:var(--bone);pointer-events:none;filter:url(#rough)}
+.pad.active{background:#e9e3d6d9}
+.pad-number{position:absolute;transform:translate(-50%,-50%) rotate(var(--rot,0deg));font:400 2.9cqw/1 var(--display);color:var(--bone);text-shadow:0 0 .3cqw var(--ink),0 0 .6cqw var(--ink);pointer-events:none;filter:url(#rough)}
 .pad:hover .pad-number{color:var(--bone)}
-.pad.active .pad-number{color:var(--ink)}
+.pad.active .pad-number{color:var(--ink);text-shadow:none}
 
 /* Fine-tune dialog */
 .voice-dialog{width:min(92vw,320px);padding:22px 24px 24px;background:var(--plate);color:var(--bone);border:2px solid var(--bone-dim);border-radius:0}

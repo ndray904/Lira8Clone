@@ -48,7 +48,7 @@ function curvedText(plate,defs,text,r,center,span,flip,cls){
  const id='arc-'+uid++;svg('path',{id,d:flip?arc(r,center+span,center-span):arc(r,center-span,center+span)},defs);
  const t=svg('text',{class:cls,'text-anchor':'middle','dominant-baseline':'central'},plate);svg('textPath',{href:'#'+id,startOffset:'50%'},t).textContent=text;
 }
-// Engraved plate: a faint sunburst behind the sliders, the pad ring, groove for each ray and group titles.
+// Engraved plate: a faint sunburst behind the sliders, the pad ring and outlines, and group titles.
 export function buildPlate(){
  const plate=svg('svg',{viewBox:'0 0 100 100',class:'plate','aria-hidden':'true'}),defs=svg('defs',{},plate);
  const line=(r0,r1,a,cls)=>{const [x1,y1]=polar(r0,a),[x2,y2]=polar(r1,a);svg('line',{x1,y1,x2,y2,class:cls},plate);};
@@ -56,7 +56,7 @@ export function buildPlate(){
  const rnd=k=>{const x=Math.sin(k*12.9898)*43758.5453;return x-Math.floor(x);};
  for(let k=0;k<240;k++){const el=svg('line',{},plate),r0=R.padOut+.8+rnd(k)*2.5,r1=R.out-1.5-rnd(k+300)*6+(k%4?0:2),a=k*1.5+(rnd(k+600)-.5)*.6;const [x1,y1]=polar(r0,a),[x2,y2]=polar(r1,a);for(const [n,v] of Object.entries({x1,y1,x2,y2,class:'sun','stroke-opacity':(.05+rnd(k+900)*.16).toFixed(2)}))el.setAttribute(n,v);}
  for(const [r,cls] of [[R.padOut+.4,'rim'],[R.padIn-.4,'rim'],[R.panel-.3,'rim']])svg('circle',{cx:50,cy:50,r,class:cls},plate);
- for(const ray of LAYOUT.rays)if(ray.slider)line(ray.long?R.longIn:R.shortIn,R.out,ray.angle,'groove');
+ for(let i=1;i<=8;i++){const pts=annularSector(R.padIn+.15,R.padOut-.15,padAngle(i)-12,padAngle(i)+12);svg('path',{d:'M'+pts.map(p=>p.join(' ')).join('L')+'Z',class:'pad-edge'},plate);}
  for(const g of LAYOUT.groups)curvedText(plate,defs,g.title,R.title,g.center,Math.max(g.span/2+3,9),g.flip||Math.sin(g.center*Math.PI/180)>.6,'group-title');
  return plate;
 }

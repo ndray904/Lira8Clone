@@ -23,6 +23,8 @@ A static browser instrument using Mike Moreno DSP's LIRA•8 Pure Data engine, h
 
 `node serve.mjs` — open http://127.0.0.1:4173, click Start audio, and hold pads or number keys 1–8. Hold sustains each four-voice group. Space or Silence suspends audio. Save/load uses local JSON files.
 
+`node build-single.mjs` (or `pnpm build:single`) bundles `dist/` into one self-contained `LIRA-8.html` (about 2 MB, git-ignored) that opens straight from disk: modules are inlined, the patch data, controls and audio worklet are embedded, images become data URIs, and only the two Google fonts are fetched. Pass a path to write it elsewhere.
+
 `node prepare.mjs` regenerates the patch bundle from the retained upstream files. `node test-engine.mjs` runs the actual WASM processor offline, checking loading, eight voices, and finite feedback output. `node --check dist/app.js` checks JS syntax.
 
 ## Preview and deploy

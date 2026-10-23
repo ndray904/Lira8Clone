@@ -33,4 +33,4 @@ for(const order of [[1,2,6],[6,2,1],[1,2,3,4,5,6,7,8],[8,7,6,5,4,3,2,1]]){
  for(const n of order)key(n,false);
  assert.equal(lit.size,0);assert.equal(active.size,0);assert.equal(heldKeys.size,0);render();
 }
-console.log('PASS: real keyboard handler → touch → control sender → WASM envelopes and per-voice audio, with knob focus.');
+console.log('PASS: real keyboard handler → touch → control sender → WASM envelopes and per-voice audio, with a slider focused.');

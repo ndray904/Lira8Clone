@@ -23,4 +23,4 @@ const menuEvent=event('6');menuEvent.target.closest=()=>({});const beforeMenu=no
 env.context.state='suspended';handlers.keydown(event('3'));assert.equal(starts,1);handlers.keyup(event('3'));assert(!heldKeys.has(3));
 env.ready=false;handlers.keydown(event('4'));assert.equal(starts,2);handlers.keyup(event('4'));
 assert(code.includes('for(const i of heldKeys)touch(i,true);'), 'Play only keys still held after audio startup');
-console.log('PASS: keys 1–8 from knobs, menus, buttons and panel; release, repeats, modifiers, audio startup/resume.');
+console.log('PASS: keys 1–8 from sliders, menus, buttons and panel; release, repeats, modifiers, audio startup/resume.');

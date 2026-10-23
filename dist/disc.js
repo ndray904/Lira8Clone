@@ -46,7 +46,9 @@ function arc(r,a0,a1){const [x0,y0]=polar(r,a0),[x1,y1]=polar(r,a1);return `M${x
 let uid=0;
 function curvedText(plate,defs,text,r,center,span,flip,cls){
  const id='arc-'+uid++;svg('path',{id,d:flip?arc(r,center+span,center-span):arc(r,center-span,center+span)},defs);
- const t=svg('text',{class:cls,'text-anchor':'middle','dominant-baseline':'central'},plate);svg('textPath',{href:'#'+id,startOffset:'50%'},t).textContent=text;
+ const t=svg('text',{class:cls,'text-anchor':'middle','dominant-baseline':'central'},plate),tp=svg('textPath',{href:'#'+id,startOffset:'50%'},t);
+ // Older Safari only follows the xlink form of the path link.
+ tp.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#'+id);tp.textContent=text;
 }
 // Group titles, engraved round the rim as clean text; the worn lines behind them live in engraving.js.
 export function buildPlate(){

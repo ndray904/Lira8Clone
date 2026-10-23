@@ -13,7 +13,7 @@ Object.defineProperty(window.HTMLSelectElement.prototype,'value',{get(){return [
 document.querySelector('#scope').getContext=()=>({});
 const schema=JSON.parse(fs.readFileSync(new URL('dist/controls.json',import.meta.url)));
 const app=fs.readFileSync(new URL('dist/app.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
-const sandbox={document,window,Event:window.Event,createCircularScope,createControlSender,polar,drawOuroboros:()=>{},...disc,fetch:async()=>({json:async()=>schema}),requestAnimationFrame:()=>0,console,Blob,URL,setTimeout,clearTimeout};
+const sandbox={document,window,Event:window.Event,createCircularScope,createControlSender,polar,...disc,fetch:async()=>({json:async()=>schema}),requestAnimationFrame:()=>0,console,Blob,URL,setTimeout,clearTimeout};
 const result=await vm.runInNewContext('(async()=>{'+app+';return {widgets,state};})()',sandbox);
 assert.equal(result.widgets.size,47);
 for(const [name,widget] of result.widgets)assert(document.body.contains(widget.input),'Control detached: '+name);

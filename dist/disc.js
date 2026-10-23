@@ -1,11 +1,11 @@
 import {polar,annularSector,sectorClip} from './ring-geometry.js';
-// Radii in percent of the disc width (50 = outer edge). The serpent rides 40–46.
+// Radii in percent of the disc width (50 = outer edge). The serpent rides 40.1–46.6; its head dips to 37.5 between -98° and -77°.
 export const R={scope:13.8,padIn:14.6,padOut:20.6,inner:21.4,longIn:22.4,shortIn:25.8,out:37.6,title:38.9,panel:40.6};
 // Rays run clockwise; each group reads as one engraved section. `under` sits in the inner band below a slider.
-// `flip` turns labels so text on the left and bottom halves reads upright.
+// `flip` turns a group's labels so text on the left and bottom halves reads upright.
 const SEQUENCE=[
  {title:'Delay mod',rays:[{slider:'mod-1',label:'Mod 1',aria:'Delay mod 1',under:{step:'del-mod',label:'Source',options:['Self','Off','LFO'],aria:'Delay modulation source'}},{slider:'mod-2',label:'Mod 2',aria:'Delay mod 2',under:{step:'lfo-wav',label:'Shape',options:['Tri','Sqr'],aria:'Delay LFO shape'}}]},
- {title:'Delay',rays:[{slider:'time-1',label:'Time 1'},{slider:'time-2',label:'Time 2'},{slider:'feedback',label:'Feedback'},{slider:'del-mix',label:'Mix',aria:'Delay mix'}]},
+ {title:'Delay',head:true,rays:[{slider:'time-1',label:'Time 1'},{slider:'time-2',label:'Time 2'},{slider:'feedback',label:'Feedback'},{slider:'del-mix',label:'Mix',aria:'Delay mix'}]},
  {title:'Output',rays:[{slider:'vol',label:'Volume'},{slider:'dst-mix',label:'Mix',aria:'Distortion mix'},{slider:'drv',label:'Drive',aria:'Distortion drive'}],end:'top'},
  ...voices(1,'A'),
  {title:'Network',flip:true,rays:[{toggle:'quantize',label:'Quantize'},{toggle:'vibrato',label:'Vibrato'},{toggle:'total-fb',label:'Total FB'},{toggle:'switch',label:'FM route'}]},
@@ -21,18 +21,18 @@ function voices(first,group,flip=false){
  const ids=`${first}${first+1}${first+2}${first+3}`,span=`${first}–${first+3}`;
  return [pair(first),{title:`Group ${group} · ${span}`,flip,rays:[{slider:'pitch-'+ids,label:'Pitch',aria:`Group ${group} pitch`},{slider:'hold-'+ids,label:'Hold',aria:`Group ${group} hold`}]},{...pair(first+2),end:flip?'top':'bottom'}];
 }
-const STEP=8.5,TOGGLE=7,GAP=5;
-// Lay rays out clockwise, opening the top group around 12 o'clock and spreading spare angle between the four regions.
+const STEP=8.3,TOGGLE=7,GAP=5,HEAD={center:-88,width:20};
+// Lay rays out clockwise, leaving the serpent's head a clear gap after Delay and spreading spare angle between the four regions.
 export const LAYOUT=(()=>{
  const width=g=>g.rays.length*(g.rays[0].toggle?TOGGLE:STEP);
- let used=0,regions=0;for(const g of SEQUENCE){used+=width(g);if(g.end)regions++;}
+ let used=HEAD.width-GAP,regions=0;for(const g of SEQUENCE){used+=width(g);if(g.end)regions++;}
  used+=GAP*(SEQUENCE.length-regions);const sep=(360-used)/regions;
- const top=SEQUENCE.slice(0,3).reduce((s,g)=>s+width(g),0)+GAP*2;
- let a=-90-top/2;const groups=[],rays=[];
- SEQUENCE.forEach((g,k)=>{const w=g.rays[0].toggle?TOGGLE:STEP,start=a;
-  for(const ray of g.rays){const angle=a+w/2;rays.push({...ray,angle,flip:!!g.flip||Math.cos(angle*Math.PI/180)<-.4,group:g.title});a+=w;}
+ const before=SEQUENCE.slice(0,SEQUENCE.findIndex(g=>g.head)+1).reduce((s,g)=>s+width(g)+GAP,-GAP);
+ let a=HEAD.center-HEAD.width/2-before;const groups=[],rays=[];
+ SEQUENCE.forEach((g,k)=>{const w=g.rays[0].toggle?TOGGLE:STEP,start=a,mid=a+width(g)/2,flip=!!g.flip||Math.cos(mid*Math.PI/180)<-.4;
+  for(const ray of g.rays){rays.push({...ray,angle:a+w/2,flip,group:g.title});a+=w;}
   groups.push({title:g.title,center:(start+a)/2,span:a-start,flip:!!g.flip});
-  a+=SEQUENCE[k].end?sep:GAP;});
+  a+=g.head?HEAD.width:g.end?sep:GAP;});
  return {rays,groups};
 })();
 // Each pad sits directly beneath its voice's tune slider.

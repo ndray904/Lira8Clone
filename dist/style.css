@@ -55,7 +55,8 @@ footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
 .plate .rim{fill:none;stroke:var(--etch);stroke-opacity:.35;stroke-width:.12}
 .plate .groove{stroke:var(--groove);stroke-width:.6;stroke-linecap:round}
 .group-title{font-family:var(--display);font-weight:700;font-size:1.25px;letter-spacing:.34px;fill:var(--bone-dim)}
-.serpent{position:absolute;inset:-5%;width:110%;height:110%;z-index:4;pointer-events:none}
+/* The engraved ouroboros: its inner edge lands on the plate rim at 40.1%, so the image spans 102.4% of the disc. */
+.serpent{position:absolute;left:-1.2%;top:-1.2%;width:102.4%;height:102.4%;z-index:4;pointer-events:none;user-select:none;filter:drop-shadow(0 .35cqw .7cqw #000)}
 
 /* Rays: a strip anchored at its inner end and rotated outward. */
 .ray{position:absolute;z-index:3;width:var(--len);height:2.8cqw;transform-origin:0 0;transform:rotate(var(--rot)) translateY(-50%);user-select:none}
@@ -76,7 +77,6 @@ footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
 .slider .ray-label{left:auto;right:.4cqw}
 .slider .ray-label output,.selector .ray-label output{display:none}
 .slider:hover .ray-label output,.slider.dragging .ray-label output,.slider:focus-within .ray-label output,.selector:hover .ray-label output,.selector:focus-within .ray-label output{display:inline}
-.slider.long .ray-label{right:auto;left:.5cqw}
 .slider.dragging .thumb{filter:brightness(1.15)}
 .fine{pointer-events:auto;padding:.15cqw .5cqw;border-radius:99px;font:600 1cqw/1.2 var(--label);letter-spacing:.06em;color:var(--bone);background:#0b0a09;border:1px solid #4a4439}
 .fine:hover{color:var(--ember-hot);border-color:var(--bone-faint)}

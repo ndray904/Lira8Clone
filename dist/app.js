@@ -2,7 +2,6 @@ import {createControlSender} from './control-sender.js';
 import {createCircularScope} from './circular-scope.js';
 import {polar} from './ring-geometry.js';
 import {R,LAYOUT,padAngle,padClip,place,buildPlate} from './disc.js';
-import {drawOuroboros} from './ouroboros.js';
 const $=s=>document.querySelector(s);
 const schema=await fetch('controls.json').then(r=>r.json());
 const state=Object.fromEntries(schema.map(c=>[c.name,c.value]));
@@ -49,10 +48,6 @@ for(let v=1;v<=8;v++){const a=padAngle(v),pair=Math.floor((v-1)/2)*2+1;
  pad.onpointerdown=e=>{if(!ready){$('#status').textContent='Start audio to play';return;}e.preventDefault();pad.setPointerCapture(e.pointerId);touch(v,$('#latch').checked?!active.has(v):true);};pad.onpointerup=()=>{if(!$('#latch').checked)touch(v,false);};pad.onpointercancel=()=>touch(v,false);pad.onlostpointercapture=()=>{if(!$('#latch').checked)touch(v,false);};pad.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&!e.repeat){e.preventDefault();e.stopPropagation();touch(v,$('#latch').checked?!active.has(v):true);}};pad.onkeyup=e=>{if(e.key==='Enter'||e.key===' '){e.stopPropagation();if(!$('#latch').checked)touch(v,false);}};}
 // Phones scroll the full-size disc sideways; start centred on the pads.
 const wrap=$('.disc-wrap');wrap.scrollLeft=(wrap.scrollWidth-wrap.clientWidth)/2;
-// The serpent is painted once per size, after the panel is on screen.
-const serpent=$('#serpent');let serpentSize=0;
-function paintSerpent(){const size=Math.min(1800,Math.round(serpent.clientWidth*(globalThis.devicePixelRatio||1)));if(!size||Math.abs(size-serpentSize)<8)return;serpentSize=size;serpent.width=serpent.height=size;drawOuroboros(serpent,{radius:.3927,width:.0564});}
-if(typeof ResizeObserver==='function'){let timer;new ResizeObserver(()=>{clearTimeout(timer);timer=setTimeout(paintSerpent,150);}).observe(serpent);}
 function status(text,on=false){$('#status').textContent=text;$('#lamp').classList.toggle('on',on);$('#power').classList.toggle('on',on);}
 function applyPreset(type){for(const c of schema)set(c.name,c.value);for(const id of ['1234','5678'])set('hold-'+id,0);set('vol',95);if(type==='init'){set('drv',20);set('dst-mix',25);set('del-mix',25);set('feedback',30);set('vibrato',0);}if(type==='drone'){set('drv',34);set('dst-mix',35);set('del-mix',64);set('feedback',66);set('f-a',20);set('f-b',35);for(const p of ['12','34','56','78']){set('fast-'+p,0);set('mod-'+p,24);}}if(type==='metal'){set('drv',100);set('dst-mix',100);set('del-mix',60);set('feedback',80);for(const p of ['12','34','56','78']){set('sharp-'+p,100);set('mod-'+p,78);}}if(type==='space'){set('time-1',108);set('time-2',98);set('del-mix',90);set('feedback',88);set('mod-1',72);set('mod-2',60);set('drv',30);set('f-a',12);set('f-b',25);}}
 applyPreset('init');

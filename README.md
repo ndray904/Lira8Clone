@@ -6,7 +6,7 @@ Every control lives on one circular plate ringed by an ouroboros, in an etched-b
 
 - **Centre**: the live circular scope, ringed by eight touch pads; each pad sits directly under its voice's Tune slider.
 - **Sliders** radiate outward like rays (`dist/disc.js` lays them out clockwise from a single list, so nothing is hand-placed). Voices 1–4 fill the right side and 5–8 the left: per pair, Tune, Mod, Sharp, Tune, with the pair's FM Source switch and Fast LED in the inner band beneath Mod and Sharp, and each group's Pitch and Hold between the pairs. Delay Mod, Delay and Output run across the top; Hyper LFO and the Voice Network switches sit at the bottom. Tune sliders are longer, in proportion to the old tune knobs. Group names are engraved round the rim, and labels on the left and bottom turn so they read upright.
-- **Serpent** (`dist/ouroboros.js`): painted once per size onto a canvas, every pixel shaded as a scaled body lit from the upper left, with the head in profile biting its tail.
+- **Serpent** (`dist/ouroboros.webp`): an engraved ouroboros, centred and corrected to a true circle so its inner edge sits on the plate rim. The top row of sliders leaves a gap where the head dips inside the ring.
 - **Corners**: name and status, presets and save/load, latch/silence/audio power, and the key hints.
 
 Drag a slider along its ray (Shift for fine adjustment); each keeps a hidden range input for keyboard and screen-reader access. A Tune slider's value opens a fine-tune dialog. At wide screen proportions the disc fills the window height with the controls in the corners; narrower screens stack them above and below, and phones scroll the disc sideways inside its own frame.

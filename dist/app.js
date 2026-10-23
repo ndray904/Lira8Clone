@@ -1,5 +1,6 @@
 import {createControlSender} from './control-sender.js';
 import {createCircularScope} from './circular-scope.js';
+import {createSphereScope} from './sphere-scope.js';
 import {polar} from './ring-geometry.js';
 import {R,LAYOUT,padAngle,padClip,place,buildPlate} from './disc.js';
 const $=s=>document.querySelector(s);
@@ -62,6 +63,11 @@ document.addEventListener('keyup',e=>{if(heldKeys.has(+e.key)){touch(+e.key,fals
 window.addEventListener('blur',()=>{for(const i of [...active])if(!$('#latch').checked)touch(i,false);heldKeys.clear();});
 $('#save').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify({format:'lira-eight',version:1,parameters:state},null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='lira-eight-patch.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 $('#load').onclick=()=>$('#file').click();$('#file').onchange=async()=>{try{const file=$('#file').files[0];if(!file)return;const p=JSON.parse(await file.text());if(p.format!=='lira-eight'||p.version!==1||!p.parameters)throw Error('Choose a LIRA Eight patch file.');for(const c of schema){const v=p.parameters[c.name],w=widgets.get(c.name);const max=w.input.type==='checkbox'?1:w.input.tagName==='SELECT'?w.input.options.length-1:127;if(typeof v!=='number'||!Number.isFinite(v)||v<0||v>max)throw Error('Invalid value for '+c.name);}for(const i of [...active])touch(i,false);for(const c of schema)set(c.name,p.parameters[c.name]);status('Patch loaded',context?.state==='running');}catch(e){status(e.message);}finally{$('#file').value='';}};
-const drawScope=createCircularScope($('#scope'));
-function draw(time){requestAnimationFrame(draw);if(!document.hidden)drawScope(analyser,context?.state==='running',time);}
+// Scope views share the canvas: the flat ring, or the two 3D views of the same samples.
+const drawRing=createCircularScope($('#scope')),drawSphere=createSphereScope($('#scope'));
+let scopeMode='ring';try{scopeMode=localStorage.getItem('lira-scope')||'ring';}catch{}
+function setScopeMode(mode){scopeMode=['ring','sphere','radiate'].includes(mode)?mode:'ring';for(const b of document.querySelectorAll('.scope-mode button'))b.setAttribute('aria-pressed',String(b.dataset.mode===scopeMode));try{localStorage.setItem('lira-scope',scopeMode);}catch{}}
+for(const b of document.querySelectorAll('.scope-mode button'))b.onclick=()=>setScopeMode(b.dataset.mode);
+setScopeMode(scopeMode);
+function draw(time){requestAnimationFrame(draw);if(document.hidden)return;const on=context?.state==='running';if(scopeMode==='ring')drawRing(analyser,on,time);else drawSphere(analyser,on,time,scopeMode);}
 requestAnimationFrame(draw);

@@ -34,6 +34,10 @@ kbd{font:600 12px var(--label);border:1px solid var(--bone-faint);border-radius:
 .status i.on{background:var(--blood-hi);border-color:var(--blood-hi)}
 .patch{display:flex;gap:8px}
 .power-bar{right:28px;bottom:24px;display:flex;gap:8px;align-items:center}
+.scope-mode{display:flex;filter:url(#rough)}
+.scope-mode button{filter:none;padding:9px 11px;margin-left:-2px;color:var(--bone-dim)}
+.scope-mode button:first-child{margin-left:0}
+.scope-mode button[aria-pressed="true"]{color:var(--ink);background:var(--bone);border-color:var(--bone)}
 .latch{display:flex;align-items:center;gap:6px;padding:0 8px;font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim);cursor:pointer}
 .latch input{accent-color:var(--blood);margin:0}
 .power{color:var(--bone);background:var(--blood);border-color:var(--blood-hi)}

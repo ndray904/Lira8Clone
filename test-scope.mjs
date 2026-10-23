@@ -19,3 +19,20 @@ draw(analyser,false,200);assert.equal(reads,1,'Stopped audio draws a quiet ring'
 canvas.clientWidth=150;draw(analyser,true,300);assert.equal(canvas.width,240,'Small screens keep a usable backing resolution');
 assert.equal(clears,3);assert(coords.every(point=>point.every(Number.isFinite)));
 console.log('PASS: silence circle, live samples, bounded geometry, resize, frame cap, stopped state.');
+// 3D views: built from the same samples, bounded, and the radiating field obeys p(r,t) = (r0/r)·s(t − r/c).
+const {spherePoints,radiateShells,project,createSphereScope}=await import('./dist/sphere-scope.js');
+const quiet=new Float32Array(2048),tone=new Float32Array(2048);for(let i=0;i<2048;i++)tone[i]=.25*Math.sin(i*2*Math.PI*4/1024);
+const still=spherePoints(quiet,0);assert.equal(still.length,1024);
+for(const [x,y,z] of still)assert(Math.abs(Math.hypot(x,y,z)-.8)<1e-9,'Silence is a perfect sphere');
+const moved=spherePoints(tone,0);assert(moved.some((p,i)=>Math.abs(Math.hypot(...p.slice(0,3))-Math.hypot(...still[i].slice(0,3)))>.05),'Samples push the sphere surface');
+assert(moved.every((p,i)=>Math.sign(Math.hypot(...p.slice(0,3))-.8)===Math.sign(tone[i])||Math.abs(tone[i])<1e-6),'Surface follows each sample sign');
+// Impulse that left the source a known time ago: only the shell at that delay should carry it.
+const impulse=new Float32Array(2048);const shells=radiateShells(quiet).length,delay=Math.round(2*1023/(shells-1));impulse[2047-delay]=.5;
+const field=radiateShells(impulse);field.forEach((s,j)=>assert.equal(Math.abs(s.p)>0,j===2,'Wave reaches shell '+j+' only at its delay'));
+const steady=new Float32Array(2048).fill(.3),spread=radiateShells(steady);
+for(let j=1;j<spread.length;j++){const r0=.2,r=r0+(1-r0)*j/(spread.length-1);assert(Math.abs(spread[j].p-spread[0].p*r0/r)<1e-9,'Pressure falls as 1/r');}
+for(const [x,y] of project(moved,1.3))assert(Math.abs(x)<1&&Math.abs(y)<1,'Projection stays inside the scope');
+const canvas3={clientWidth:300,width:0,height:0,getContext:()=>new Proxy({},{get:(t,k)=>k in t?t[k]:()=>({})})};
+const draw3=createSphereScope(canvas3);let reads3=0;const analyser3={getFloatTimeDomainData:d=>{reads3++;d.set(tone);}};
+draw3(analyser3,true,100,'sphere');draw3(analyser3,true,110,'radiate');draw3(analyser3,true,200,'radiate');assert.equal(reads3,2,'3D views share the 30 FPS cap and read live samples');
+console.log('PASS: 3D views use real samples; silence is a true sphere; radiated wave arrives at its delay and falls as 1/r.');

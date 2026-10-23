@@ -1,6 +1,6 @@
 import {polar,annularSector,sectorClip} from './ring-geometry.js';
-// Radii in percent of the disc width (50 = outer edge). The serpent rides 40.1–46.6; its head dips to 37.5 between -98° and -77°.
-export const R={scope:13.8,padIn:14.6,padOut:20.6,inner:21.4,longIn:22.4,shortIn:25.8,out:37.6,title:38.9,panel:40.6};
+// Radii in percent of the disc width (50 = outer edge). The serpent rides 39.5–46.6 (its lower half sits lowest); its head dips to 37.5 between -98° and -77°.
+export const R={scope:13.8,padIn:14.6,padOut:20.6,inner:21.4,longIn:22.4,shortIn:25.6,out:36.9,title:38.15,panel:40.6};
 // Rays run clockwise; each group reads as one engraved section. `under` sits in the inner band below a slider.
 // `flip` turns a group's labels so text on the left and bottom halves reads upright.
 const SEQUENCE=[

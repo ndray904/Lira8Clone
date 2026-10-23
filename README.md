@@ -23,6 +23,10 @@ A static browser instrument using Mike Moreno DSP's LIRA•8 Pure Data engine, h
 
 `node prepare.mjs` regenerates the patch bundle from the retained upstream files. `node test-engine.mjs` runs the actual WASM processor offline, checking loading, eight voices, and finite feedback output. `node --check dist/app.js` checks JS syntax.
 
+## Preview and deploy
+
+Work happens on the `dev` branch. Each push to `main` runs every `test-*.mjs` script and, if they pass, deploys `dist/` to GitHub Pages (`.github/workflows/pages.yml`); Pages must use "GitHub Actions" as its source. Unmerged `dev` changes are previewed in a private Claude Artifact (https://claude.ai/artifact/6o3Vq1AojiEHUBX2zGYkb1), which serves the same `dist/` files with the page's document wrapper removed.
+
 ## Provenance and compatibility
 
 - LIRA•8: https://github.com/MikeMorenoDSP/LIRA-8 commit `6a6b6cbc3359a20d7741c9270c7690ab6b21c92a`.

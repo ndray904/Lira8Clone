@@ -4,6 +4,7 @@ import {createSphereScope} from './sphere-scope.js';
 import {polar} from './ring-geometry.js';
 import {R,LAYOUT,padAngle,padClip,place,buildPlate} from './disc.js';
 import {paintEngraving} from './engraving.js';
+import {createDiscZoom} from './disc-zoom.js';
 const $=s=>document.querySelector(s);
 const schema=await fetch('controls.json').then(r=>r.json());
 const state=Object.fromEntries(schema.map(c=>[c.name,c.value]));
@@ -55,13 +56,18 @@ for(let v=1;v<=8;v++){const a=padAngle(v),pair=Math.floor((v-1)/2)*2+1;
 // While any note sounds, a stray finger elsewhere on the disc is held still too (switches still take
 // taps). Safari honours
 // touch-action only partly, so its touch and gesture events are cancelled directly.
-const playing=e=>{const t=e.target;return !!t.closest?.('.pad,.slider')||active.size>0&&!t.closest?.('button,input,label,select');};
-for(const type of ['touchstart','touchmove'])disc.addEventListener(type,e=>{if(playing(e))e.preventDefault();},{passive:false});
+const playing=e=>{const t=e.target;return !!t.closest?.('.pad,.slider')||(active.size>0||zoom.active)&&!t.closest?.('button,input,label,select');};
+for(const type of ['touchstart','touchmove'])$('.disc-wrap').addEventListener(type,e=>{if(playing(e))e.preventDefault();},{passive:false});
 document.addEventListener('gesturestart',e=>{if(e.target.closest?.('#disc'))e.preventDefault();},{passive:false});
 // Browsers make no click from a second finger, so switches tapped while a note is held act on lift-off.
 disc.addEventListener('pointerup',e=>{if(e.pointerType!=='touch'||e.isPrimary)return;const sw=e.target.closest?.('.toggle,.selector');sw?.querySelector('input[type=checkbox],.pill')?.click();});
-// Phones scroll the full-size disc sideways; start centred on the pads.
-const wrap=$('.disc-wrap');wrap.scrollLeft=(wrap.scrollWidth-wrap.clientWidth)/2;
+// When the full-size disc cannot fit the window (small phones, either way up), fit it into a square frame
+// and let fingers zoom and pan the instrument itself instead of the page.
+const wrap=$('.disc-wrap'),zoom=createDiscZoom(wrap,disc);
+function layoutFrame(){const compact=innerWidth<752||innerHeight<640,app=$('.app');
+ app.classList.toggle('compact',compact);if(compact)app.style.setProperty('--frame',Math.max(240,Math.min(innerWidth,innerHeight)-16)+'px');
+ if(compact!==zoom.active)zoom.set(compact);else zoom.refit();}
+layoutFrame();let frameTimer;addEventListener('resize',()=>{clearTimeout(frameTimer);frameTimer=setTimeout(layoutFrame,120);});
 function status(text,on=false){$('#status').textContent=text;$('#lamp').classList.toggle('on',on);$('#power').classList.toggle('on',on);}
 function applyPreset(type){for(const c of schema)set(c.name,c.value);for(const id of ['1234','5678'])set('hold-'+id,0);set('vol',95);if(type==='init'){set('drv',20);set('dst-mix',25);set('del-mix',25);set('feedback',30);set('vibrato',0);}if(type==='drone'){set('drv',34);set('dst-mix',35);set('del-mix',64);set('feedback',66);set('f-a',20);set('f-b',35);for(const p of ['12','34','56','78']){set('fast-'+p,0);set('mod-'+p,24);}}if(type==='metal'){set('drv',100);set('dst-mix',100);set('del-mix',60);set('feedback',80);for(const p of ['12','34','56','78']){set('sharp-'+p,100);set('mod-'+p,78);}}if(type==='space'){set('time-1',108);set('time-2',98);set('del-mix',90);set('feedback',88);set('mod-1',72);set('mod-2',60);set('drv',30);set('f-a',12);set('f-b',25);}}
 applyPreset('init');

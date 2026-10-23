@@ -139,4 +139,19 @@ footer details p{margin-top:8px;line-height:1.6;letter-spacing:.02em}
  footer{max-width:none;padding:0 16px}
  .app>details{width:auto;margin:0 16px!important}
 }
+/* Compact (small phones, either way up): the disc keeps its design size inside a square frame that fits
+   the screen; disc-zoom.js scales and pans it. The page itself scrolls only to reach the buttons. */
+.app.compact{--d:720px;height:auto;min-height:0;overflow:visible;display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:10px 0 20px}
+.app.compact .bar,.app.compact .power-bar,.app.compact footer,.app.compact>details{position:static}
+.app.compact .bar{padding:0 12px;flex-wrap:wrap;gap:10px}
+.app.compact .brand{font-size:34px}
+.app.compact .power-bar{justify-content:center;flex-wrap:wrap;padding:0 8px}
+.app.compact .instrument{display:block;padding:0}
+.app.compact .disc-wrap{display:block;position:relative;width:var(--frame);height:var(--frame);margin:0 auto;padding:0;overflow:hidden;touch-action:none;cursor:grab}
+.app.compact .disc-wrap.zoomed{cursor:move}
+.app.compact .disc{position:absolute;left:0;top:0;margin:0;transform-origin:0 0}
+.app.compact footer{max-width:none;padding:0 12px}
+.app.compact>details{width:auto;margin:0 12px!important}
+.zoom-hint{display:none}
+.app.compact .zoom-hint{display:block;margin:-4px 0 0;text-align:center;font-size:12px;color:var(--bone-faint)}
 @media (prefers-reduced-motion:reduce){.selector .pill::after{transition:none}}

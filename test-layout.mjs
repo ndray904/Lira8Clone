@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {parseHTML} from 'linkedom';
 import {createCircularScope} from './dist/circular-scope.js';
 import {createSphereScope} from './dist/sphere-scope.js';
+import {createDiscZoom} from './dist/disc-zoom.js';
 import {createControlSender} from './dist/control-sender.js';
 import {polar} from './dist/ring-geometry.js';
 const {document,window}=parseHTML(fs.readFileSync(new URL('dist/index.html',import.meta.url),'utf8'));
@@ -14,7 +15,7 @@ Object.defineProperty(window.HTMLSelectElement.prototype,'value',{get(){return [
 document.querySelector('#scope').getContext=()=>({});
 const schema=JSON.parse(fs.readFileSync(new URL('dist/controls.json',import.meta.url)));
 const app=fs.readFileSync(new URL('dist/app.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
-const sandbox={document,window,Event:window.Event,createCircularScope,createSphereScope,createControlSender,polar,...disc,fetch:async()=>({json:async()=>schema}),requestAnimationFrame:()=>0,console,Blob,URL,setTimeout,clearTimeout};
+const sandbox={document,window,Event:window.Event,createCircularScope,createSphereScope,createDiscZoom,innerWidth:1440,innerHeight:900,addEventListener:()=>{},createControlSender,polar,...disc,fetch:async()=>({json:async()=>schema}),requestAnimationFrame:()=>0,console,Blob,URL,setTimeout,clearTimeout};
 const result=await vm.runInNewContext('(async()=>{'+app+';return {widgets,state};})()',sandbox);
 assert.equal(result.widgets.size,47);
 for(const [name,widget] of result.widgets)assert(document.body.contains(widget.input),'Control detached: '+name);

@@ -1,36 +1,29 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0c0a08"><title>LIRA·8 · The Living Circuit</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0c0b0a"><title>LIRA·8 · The Living Circuit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Cormorant+SC:wght@600;700&display=swap">
 <link rel="stylesheet" href="style.css"></head>
 <body><main class="app">
 <header class="bar">
- <a class="brand" href="./">LIRA<span>·</span>8</a>
- <div class="status"><i id="lamp"></i><span id="status" role="status">Ready when you are</span></div>
+ <div class="brand-block"><a class="brand" href="./">LIRA<span>·</span>8</a><div class="status"><i id="lamp"></i><span id="status" role="status">Ready when you are</span></div></div>
  <div class="patch"><select id="preset" aria-label="Starting point"><option value="init">Open circuit</option><option value="drone">Slow bloom</option><option value="metal">Metal garden</option><option value="space">Deep space</option></select><button id="save">Save</button><button id="load">Load</button><input id="file" type="file" accept="application/json" hidden></div>
- <label class="latch"><input type="checkbox" id="latch"><span>Latch</span></label>
- <button id="panic" title="Silence and stop audio">Silence</button>
- <button id="power" class="power">Start audio</button>
 </header>
 <div class="instrument">
- <aside class="rail">
-  <section class="module"><h2>Hyper LFO</h2><div class="row" id="lfo"></div></section>
-  <section class="module"><h2>Delay</h2><div class="row" id="delay"></div><h3>Modulation</h3><div class="row" id="delay-mod"></div></section>
- </aside>
  <section class="disc-wrap" aria-label="Eight-voice instrument">
   <div id="disc" class="disc">
+   <canvas id="serpent" class="serpent" aria-hidden="true"></canvas>
    <div class="scope"><canvas id="scope" width="720" height="720" aria-label="Live audio waveform wrapped around a circle"></canvas></div>
    <div id="pads" aria-label="Touch pads"></div>
   </div>
  </section>
- <aside class="rail">
-  <section class="module"><h2>Groups</h2><div class="row" id="groups"></div></section>
-  <section class="module"><h2>Distortion</h2><div class="row" id="output"></div></section>
-  <section class="module"><h2>Voice network</h2><div class="row" id="routing"></div></section>
- </aside>
+</div>
+<div class="power-bar">
+ <label class="latch"><input type="checkbox" id="latch"><span>Latch</span></label>
+ <button id="panic" title="Silence and stop audio">Silence</button>
+ <button id="power" class="power">Start audio</button>
 </div>
 <footer>
- <p class="keys">Hold pads or keys <kbd>1</kbd>–<kbd>8</kbd> · drag knobs up and down (<kbd>Shift</kbd> for fine) · <kbd>Space</kbd> silences</p>
+ <p class="keys">Hold pads or keys <kbd>1</kbd>–<kbd>8</kbd> · drag sliders (<kbd>Shift</kbd> for fine) · <kbd>Space</kbd> silences</p>
  <details><summary>About this instrument &amp; credits</summary><p>A browser adaptation of <a href="https://github.com/MikeMorenoDSP/LIRA-8">LIRA•8 by Mike Moreno DSP</a>, running the original Pure Data synthesis patch through <a href="https://github.com/hyrfilm/libpd-wasm">libpd-wasm</a>. Inspired by SOMA Laboratory’s LYRA-8; unofficial and unaffiliated. This is a digital interpretation, not a circuit-accurate hardware model. Presets change settings; touch a pad or raise Hold to hear them.</p><p><a href="LICENSES.txt">Third-party licenses</a> · <a href="https://somasynths.com/wp-content/uploads/2020/11/LYRA-8_manual_Eng_V2_1.pdf">Original instrument manual</a></p></details>
 </footer>
 </main><script type="module" src="input-monitor.js"></script><script type="module" src="app.js"></script></body></html>

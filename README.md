@@ -2,16 +2,16 @@
 
 ## Layout
 
-The instrument is a circular disc flanked by two rails of global modules.
+Every control lives on one circular plate ringed by an ouroboros, in an etched-bone style: bone engraving on charcoal, ember red for live values.
 
-- **Disc** (`dist/disc.js` computes every position from ring radii, so nothing is hand-placed): the live circular scope in the centre, eight annular touch pads around it, a ring of four pair quadrants (Mod, Sharp, Fast, FM Source), and an outer ring of eight voice sectors with Tune knobs. Each tune knob's value readout opens a fine-tune dialog. Pair and voice names are engraved along the rings; controls in the bottom quadrant hang their labels toward the centre so they never collide with the engraving.
-- **Left rail**: Hyper LFO, Delay and delay modulation.
-- **Right rail**: Group A/B Pitch and Hold, Distortion, Voice Network.
-- **Header**: status, starting point presets, save/load, latch, silence and audio power.
+- **Centre**: the live circular scope, ringed by eight touch pads; each pad sits directly under its voice's Tune slider.
+- **Sliders** radiate outward like rays (`dist/disc.js` lays them out clockwise from a single list, so nothing is hand-placed). Voices 1–4 fill the right side and 5–8 the left: per pair, Tune, Mod, Sharp, Tune, with the pair's FM Source switch and Fast LED in the inner band beneath Mod and Sharp, and each group's Pitch and Hold between the pairs. Delay Mod, Delay and Output run across the top; Hyper LFO and the Voice Network switches sit at the bottom. Tune sliders are longer, in proportion to the old tune knobs. Group names are engraved round the rim, and labels on the left and bottom turn so they read upright.
+- **Serpent** (`dist/ouroboros.js`): painted once per size onto a canvas, every pixel shaded as a scaled body lit from the upper left, with the head in profile biting its tail.
+- **Corners**: name and status, presets and save/load, latch/silence/audio power, and the key hints.
 
-Knobs are dragged vertically (Shift for fine adjustment); each keeps a hidden range input for keyboard and screen-reader access. The disc fits the viewport at desktop sizes, the rails wrap below it under 1260 px, and on phones the disc keeps a playable 560 px size and scrolls sideways inside its own frame.
+Drag a slider along its ray (Shift for fine adjustment); each keeps a hidden range input for keyboard and screen-reader access. A Tune slider's value opens a fine-tune dialog. At wide screen proportions the disc fills the window height with the controls in the corners; narrower screens stack them above and below, and phones scroll the disc sideways inside its own frame.
 
-`node test-layout.mjs` uses the dev-only linkedom package to run the actual app initialization, verify all 47 controls are connected and placed on the disc or rails, cycle every switch, apply a preset, and edit tuning through both the knob input and the fine-tune dialog. Install test dependencies with pnpm. Other tests run without dependencies.
+`node test-layout.mjs` uses the dev-only linkedom package to run the actual app initialization, verify all 47 controls are connected and on the disc as radial sliders or switches, check ray spacing, pad alignment and label orientation, cycle every switch, apply a preset, and edit tuning through both the slider input and the fine-tune dialog. Install test dependencies with pnpm. Other tests run without dependencies.
 
 The circular scope wraps 1024 time-domain samples from a 2048-sample analyser window around a base radius, anchored to an upward zero crossing. A short seam blend avoids a closure spike. It uses output audio only, caps drawing at 30 FPS, skips hidden tabs, and adapts canvas resolution to screen density. A stopped signal displays an idle circle. This is a radial waveform, not an X–Y/goniometer. `node test-scope.mjs` verifies the renderer's geometry, real sample consumption, resize behavior and frame cap.
 
